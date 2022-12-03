@@ -13,11 +13,47 @@ namespace FinalProject.Controllers
         {
             _studentService = studentService;
         }
-        [HttpPost("/addStudent")]
-        public Student AddStudent(StudentRequest body)
+
+        public ActionResult Create()
         {
-            return _studentService.AddStudent(body);
+            return View();
         }
+
+        [HttpPost]
+        public IActionResult Create(StudentRequest body)
+        {
+            try
+            {
+                var result = _studentService.AddStudent(body);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    ex.Message);
+            }
+        }
+        public ActionResult Read()
+        {
+            return View();
+        }
+        [HttpGet]
+
+        public IActionResult read()
+        {
+            try
+            {
+                var result = _studentService.GetAllStudents();
+                //return Ok(result);
+                return View(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    ex.Message);
+            }
+        }
+       
 
     }
 }

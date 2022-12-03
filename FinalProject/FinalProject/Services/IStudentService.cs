@@ -5,6 +5,7 @@ namespace FinalProject.Services
 {
     public interface IStudentService
     {
+        public List<StudentResponse> GetAllStudents();
         public Student AddStudent(StudentRequest body);
     }
 }

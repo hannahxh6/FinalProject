@@ -5,18 +5,17 @@ namespace FinalProject.Services
 {
     public class StudentService : IStudentService
     {
-        public postgresContext _context;
-        private object element;
+        public PostgresContext _context;
 
-        public StudentService(postgresContext context)
+        public StudentService(PostgresContext context)
         {
             _context = context;
         }
 
         public Student AddStudent(StudentRequest body)
         {
-                var result = _context.Students.Where(element => element.FName.ToLower() == body.Fname.ToLower() &&
-                element.LName.ToLower() == body.Lname.ToLower()).FirstOrDefault();
+                var result = _context.Students.Where(element => element.Fname.ToLower() == body.Fname.ToLower() &&
+                element.Lname.ToLower() == body.Lname.ToLower()).FirstOrDefault();
                 if (result != null)
                 {
                     throw new Exception("User already exist");
@@ -33,6 +32,17 @@ namespace FinalProject.Services
                 return response.Entity;
             }
 
-        
+        public List<StudentResponse> GetAllStudents()
+        {
+            var result = (from student in _context.Students
+                          select new StudentResponse()
+                          {
+                              Id = student.Id,
+                              Fname = student.Fname,
+                              Email = student.Email,
+                              NrAme = student.NrAme
+                          }).ToList();
+            return result;
+        }
     }
 }
